@@ -1,0 +1,36 @@
+openedx_progress/models.py
+  s_6bdfa6bd156cf8::t_3528e7ea1521e1 14-15,61-62
+tests/__init__.py
+  s_6bdfa6bd156cf8::t_18e561f9395f18 1-3
+requirements/test.txt
+  s_6bdfa6bd156cf8::t_bd6e69d6e04bf7 13
+requirements/quality.txt
+  s_6bdfa6bd156cf8::t_bd6e69d6e04bf7 23
+tox.ini
+  s_6bdfa6bd156cf8::t_626cf738381e52 2
+  s_6bdfa6bd156cf8::t_fb106dc3884e5c 70
+setup.py
+  s_6bdfa6bd156cf8::t_36b49efaefbf5a 146,159
+requirements/doc.txt
+  s_6bdfa6bd156cf8::t_bd6e69d6e04bf7 31
+requirements/dev.txt
+  s_6bdfa6bd156cf8::t_bd6e69d6e04bf7 38
+requirements/test.in
+  s_6bdfa6bd156cf8::t_b9129aa238ebac 8
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.8",
+  "base_commit_sha": "ad9b139b7c14e2de098d8885c744648670c9cfd8",
+  "prompts": {},
+  "sessions": {
+    "s_6bdfa6bd156cf8": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019ee020-b6fd-7bf0-b382-b8017b9b40b3",
+        "model": "gpt-5.5"
+      },
+      "human_author": "Andrés González <andres@aulasneo.com>"
+    }
+  }
+}
