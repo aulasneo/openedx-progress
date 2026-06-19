@@ -3,6 +3,7 @@ openedx_progress Django application initialization.
 """
 
 from django.apps import AppConfig
+from edx_django_utils.plugins.constants import PluginSettings, PluginURLs
 
 
 class OpenedxProgressConfig(AppConfig):
@@ -10,8 +11,36 @@ class OpenedxProgressConfig(AppConfig):
     Configuration for the openedx_progress Django application.
     """
 
-    default_auto_field = 'django.db.models.AutoField'
     name = 'openedx_progress'
+    verbose_name = 'Open edX Progress'
+    default_auto_field = 'django.db.models.AutoField'
+
+    plugin_app = {
+        PluginURLs.CONFIG: {
+            'cms.djangoapp': {
+                PluginURLs.NAMESPACE: 'openedx_progress',
+                PluginURLs.REGEX: r'^api/progress/',
+                PluginURLs.RELATIVE_PATH: 'urls',
+            },
+            'lms.djangoapp': {
+                PluginURLs.NAMESPACE: 'openedx_progress',
+                PluginURLs.REGEX: r'^api/progress/',
+                PluginURLs.RELATIVE_PATH: 'urls',
+            },
+        },
+        PluginSettings.CONFIG: {
+            'cms.djangoapp': {
+                'common': {
+                    PluginSettings.RELATIVE_PATH: 'settings.common',
+                },
+            },
+            'lms.djangoapp': {
+                'common': {
+                    PluginSettings.RELATIVE_PATH: 'settings.common',
+                },
+            },
+        },
+    }
 
     def ready(self):
         """

@@ -159,4 +159,12 @@ setup(
         'Programming Language :: Python :: 3.11',
         'Programming Language :: Python :: 3.12',
     ],
+    entry_points={
+        'lms.djangoapp': [
+            'openedx_progress = openedx_progress.apps:OpenedxProgressConfig',
+        ],
+        'cms.djangoapp': [
+            'openedx_progress = openedx_progress.apps:OpenedxProgressConfig',
+        ],
+    },
 )

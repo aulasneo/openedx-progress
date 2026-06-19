@@ -3,5 +3,6 @@
 
 Django             # Web application framework
 django-model-utils        # Provides TimeStampedModel abstract base class
+edx-django-utils          # Provides Open edX Django plugin registration helpers
 
 openedx-atlas
