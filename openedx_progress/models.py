@@ -11,6 +11,8 @@ class CourseCompletionSummary(TimeStampedModel):
 
     .. pii: The user_id field stores an identifier linked to a learner.
        The course_id and completion counts are educational records.
+    .. pii_types: id, other
+    .. pii_retirement: retained
     """
 
     user_id = models.PositiveIntegerField(db_index=True)
@@ -56,6 +58,8 @@ class CourseCompletionSummaryDirty(TimeStampedModel):
 
     .. pii: The user_id field stores an identifier linked to a learner.
        The course_id and reason fields may reveal learning activity.
+    .. pii_types: id, other
+    .. pii_retirement: retained
     """
 
     user_id = models.PositiveIntegerField(db_index=True)
