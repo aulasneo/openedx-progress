@@ -1,0 +1,37 @@
+requirements/base.txt
+  s_6bdfa6bd156cf8::t_500beadf9c12aa 1-19
+requirements/quality.txt
+  s_6bdfa6bd156cf8::t_500beadf9c12aa 1-131
+requirements/pip.txt
+  s_6bdfa6bd156cf8::t_66b209ceec038b 7-9,13,15
+  s_6bdfa6bd156cf8::t_500beadf9c12aa 5,10,14,16
+requirements/dev.txt
+  s_6bdfa6bd156cf8::t_66b209ceec038b 1-242
+requirements/doc.txt
+  s_6bdfa6bd156cf8::t_500beadf9c12aa 1-198
+requirements/pip-tools.txt
+  s_6bdfa6bd156cf8::t_66b209ceec038b 11
+  s_6bdfa6bd156cf8::t_8ba19ce514dd2b 5,12-14,16
+requirements/ci.txt
+  s_6bdfa6bd156cf8::t_500beadf9c12aa 1-40
+Makefile
+  s_6bdfa6bd156cf8::t_3dc709ef816681 9-12,40,43-53,59,69-70,73
+requirements/test.txt
+  s_6bdfa6bd156cf8::t_500beadf9c12aa 1-58
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.8",
+  "base_commit_sha": "534041571debad9eced2042d0b326656c2ab62a1",
+  "prompts": {},
+  "sessions": {
+    "s_6bdfa6bd156cf8": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019ee020-b6fd-7bf0-b382-b8017b9b40b3",
+        "model": "gpt-5.5"
+      },
+      "human_author": "Andrés González <andres@aulasneo.com>"
+    }
+  }
+}
