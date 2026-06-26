@@ -25,6 +25,7 @@ certifi==2026.6.17
 cffi==2.0.0
     # via
     #   -r requirements/test.txt
+    #   cryptography
     #   pynacl
 charset-normalizer==3.4.7
     # via requests
@@ -39,9 +40,12 @@ coverage[toml]==7.14.1
     # via
     #   -r requirements/test.txt
     #   pytest-cov
+cryptography==49.0.0
+    # via secretstorage
 django==5.2.15
     # via
     #   -c https://raw.githubusercontent.com/edx/edx-lint/master/edx_lint/files/common_constraints.txt
+    #   -r requirements/test.txt
     #   django-crum
     #   django-model-utils
     #   django-waffle
@@ -83,6 +87,10 @@ jaraco-context==6.1.2
     # via keyring
 jaraco-functools==4.5.0
     # via keyring
+jeepney==0.9.0
+    # via
+    #   keyring
+    #   secretstorage
 jinja2==3.1.6
     # via
     #   -r requirements/test.txt
@@ -178,6 +186,8 @@ rich==15.0.0
     # via twine
 roman-numerals==4.1.0
     # via sphinx
+secretstorage==3.5.0
+    # via keyring
 snowballstemmer==3.1.1
     # via sphinx
 soupsieve==2.8.4
