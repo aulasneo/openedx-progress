@@ -125,14 +125,14 @@ if sys.argv[-1] == 'tag':
     os.system("git push --tags")
     sys.exit()
 
-README = open(os.path.join(os.path.dirname(__file__), 'README.rst'), encoding="utf8").read()
-CHANGELOG = open(os.path.join(os.path.dirname(__file__), 'CHANGELOG.rst'), encoding="utf8").read()
+README = open(os.path.join(os.path.dirname(__file__), 'README.md'), encoding="utf8").read()
 
 setup(
     name='openedx-progress',
     version=VERSION,
     description="""Progress tracking for Open edX students""",
-    long_description=README + '\n\n' + CHANGELOG,
+    long_description=README,
+    long_description_content_type='text/markdown',
     author='Andrés González',
     author_email='andres@aulasneo.com',
     url='https://github.com/aulasneo/openedx-progress',
