@@ -3,6 +3,7 @@ Backfill learner course completion summaries.
 """
 # pylint: disable=import-outside-toplevel,import-error
 import time
+import traceback
 
 from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand, CommandError
@@ -87,6 +88,7 @@ class Command(BaseCommand):
         sleep_seconds = options['sleep']
         dry_run = options['dry_run']
         force = options['force']
+        verbosity = options['verbosity']
 
         if batch_size < 1:
             raise CommandError('--batch-size must be greater than 0.')
@@ -100,7 +102,6 @@ class Command(BaseCommand):
             'skipped': 0,
             'failed': 0,
         }
-        failures = []
 
         for batch_number, user_batch in enumerate(batched(self._iter_users(users, batch_size), batch_size), start=1):
             for user in user_batch:
@@ -108,8 +109,11 @@ class Command(BaseCommand):
                     action = self._process_user(course_key, user, force=force, dry_run=dry_run)
                 except Exception as exc:  # pylint: disable=broad-except
                     stats['failed'] += 1
-                    failures.append((getattr(user, 'id', user), str(exc)))
-                    self.stderr.write('Failed user {}: {}'.format(getattr(user, 'id', user), exc))
+                    user_id = getattr(user, 'id', user)
+                    message = self._format_exception(exc)
+                    self.stderr.write('Failed user {}: {}'.format(user_id, message))
+                    if verbosity > 1:
+                        self.stderr.write(''.join(traceback.format_exception(type(exc), exc, exc.__traceback__)))
                     continue
 
                 stats['processed'] += 1
@@ -135,9 +139,6 @@ class Command(BaseCommand):
                 stats['failed'],
             )
         )
-
-        if failures:
-            raise CommandError('{} learner(s) failed while backfilling summaries.'.format(len(failures)))
 
     def _users_for_options(self, course_key, user_ids):
         """
@@ -168,3 +169,13 @@ class Command(BaseCommand):
 
         services.upsert_completion_summary(course_key, user)
         return 'updated'
+
+    def _format_exception(self, exc):
+        """
+        Return a compact exception description for command output.
+        """
+        exc_type = type(exc).__name__
+        message = str(exc)
+        if message:
+            return '{}: {}'.format(exc_type, message)
+        return exc_type

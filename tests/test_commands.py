@@ -6,7 +6,6 @@ from io import StringIO
 import pytest
 from django.contrib.auth import get_user_model
 from django.core.management import call_command
-from django.core.management.base import CommandError
 from django.utils import timezone
 
 from openedx_progress import services
@@ -105,18 +104,18 @@ def test_backfill_failures_are_logged_and_processing_continues(monkeypatch):
 
     monkeypatch.setattr(backfill_command.services, 'upsert_completion_summary', fake_upsert)
 
-    with pytest.raises(CommandError):
-        call_command(
-            'backfill_course_completion_summaries',
-            '--course-id',
-            'course-v1:edX+DemoX+Demo_Course',
-            '--user-id',
-            str(failing.id),
-            '--user-id',
-            str(succeeding.id),
-            stdout=StringIO(),
-            stderr=stderr,
-        )
+    call_command(
+        'backfill_course_completion_summaries',
+        '--course-id',
+        'course-v1:edX+DemoX+Demo_Course',
+        '--user-id',
+        str(failing.id),
+        '--user-id',
+        str(succeeding.id),
+        stdout=StringIO(),
+        stderr=stderr,
+    )
 
     assert 'Failed user {}'.format(failing.id) in stderr.getvalue()
+    assert 'RuntimeError: summary failed' in stderr.getvalue()
     assert CourseCompletionSummary.objects.filter(user_id=succeeding.id).exists()
