@@ -1,0 +1,25 @@
+README.md
+  s_9c1baa6027eed5::t_a489f6b12d9b22 159-160
+  s_9c1baa6027eed5::t_218da16066b28a 139-158,161
+tests/test_commands.py
+  s_9c1baa6027eed5::t_d4668a9bada93f 107-117
+  s_9c1baa6027eed5::t_218da16066b28a 120
+openedx_progress/management/commands/backfill_course_completion_summaries.py
+  s_9c1baa6027eed5::t_e7b42f11780fa4 6,91,112-116,172-181
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.3",
+  "base_commit_sha": "f06032d16c7b1fd1f44b760d44ffdf9bd52d6086",
+  "prompts": {},
+  "sessions": {
+    "s_9c1baa6027eed5": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019f03fe-14fe-7f71-8eaf-ad03c3157584",
+        "model": "gpt-5.5"
+      },
+      "human_author": "Andrés González <andres@aulasneo.com>"
+    }
+  }
+}
