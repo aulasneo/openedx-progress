@@ -125,39 +125,18 @@ Run the backfill command inside an LMS environment where edx-platform apps are
 installed:
 
 ```bash
-./manage.py lms backfill_course_completion_summaries --course-id course-v1:edX+DemoX+Demo_Course
+./manage.py lms backfill_course_completion_summaries
 ```
 
 Useful options:
 
+- `--course-id course-v1:edX+DemoX+Demo_Course` restricts processing to one
+  course. When omitted, all courses from CourseOverview are processed.
 - `--user-id 123` can be repeated to process specific learners.
 - `--batch-size 500` controls database iteration batches.
 - `--sleep 0.5` pauses between batches.
 - `--dry-run` selects learners without writing rows.
 - `--force` recomputes rows that already exist.
-
-### Troubleshooting backfills
-
-If every learner fails with an error like:
-
-```text
-Failed user 7: PluginMissingError: chatgptxblock
-```
-
-or:
-
-```text
-Failed user 7: KeyError: chatgptxblock
-```
-
-the LMS could read the course structure, but could not load a block type used by
-the course. In this example, the course references `chatgptxblock`, but that
-XBlock is not installed or importable in the LMS environment running the command.
-
-Install or enable the missing XBlock in the same LMS environment, then rerun the
-backfill. You can also run the command with `--verbosity 2` to print the full
-traceback for each failed learner. Learner-level failures are logged and counted
-in the final `failed` total, but they do not interrupt the rest of the backfill.
 
 ## Dirty queue
 

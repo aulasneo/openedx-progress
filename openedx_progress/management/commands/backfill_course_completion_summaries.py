@@ -16,12 +16,35 @@ def parse_course_key(course_id):
     """
     Parse a course key when opaque-keys is available.
     """
+    if not isinstance(course_id, str):
+        return course_id
+
     try:
         from opaque_keys.edx.keys import CourseKey
     except ImportError:
         return course_id
 
     return CourseKey.from_string(course_id)
+
+
+def course_keys_from_overviews():
+    """
+    Return course keys for all courses known to CourseOverview.
+    """
+    try:
+        from openedx.core.djangoapps.content.course_overviews.models import CourseOverview
+    except ImportError as exc:
+        raise CommandError('CourseOverview is required when --course-id is omitted.') from exc
+
+    overviews = (
+        CourseOverview.get_all_courses()
+        if hasattr(CourseOverview, 'get_all_courses')
+        else CourseOverview.objects.all()
+    )
+    if hasattr(overviews, 'order_by') and hasattr(overviews, 'values_list'):
+        return overviews.order_by('id').values_list('id', flat=True)
+
+    return (getattr(course_overview, 'id', course_overview) for course_overview in overviews)
 
 
 def enrolled_users_for_course(course_key):
@@ -64,10 +87,14 @@ class Command(BaseCommand):
     Materialize course completion summaries for learners in a course.
     """
 
-    help = 'Backfill learner course completion summaries for one Open edX course.'
+    help = 'Backfill learner course completion summaries for Open edX courses.'
 
     def add_arguments(self, parser):
-        parser.add_argument('--course-id', required=True, help='Opaque course id, for example course-v1:Org+Num+Run.')
+        parser.add_argument(
+            '--course-id',
+            default=None,
+            help='Optional opaque course id, for example course-v1:Org+Num+Run.',
+        )
         parser.add_argument(
             '--user-id',
             dest='user_ids',
@@ -83,18 +110,56 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         course_id = options['course_id']
-        course_key = parse_course_key(course_id)
         batch_size = options['batch_size']
         sleep_seconds = options['sleep']
-        dry_run = options['dry_run']
-        force = options['force']
-        verbosity = options['verbosity']
 
         if batch_size < 1:
             raise CommandError('--batch-size must be greater than 0.')
         if sleep_seconds < 0:
             raise CommandError('--sleep cannot be negative.')
 
+        stats = {
+            'processed': 0,
+            'updated': 0,
+            'skipped': 0,
+            'failed': 0,
+        }
+
+        for course_key in self._course_keys_for_options(course_id):
+            if not course_id:
+                self.stdout.write('Processing course {}'.format(course_key))
+
+            course_stats = self._process_course(course_key, options)
+            for key, value in course_stats.items():
+                stats[key] += value
+
+        self.stdout.write(
+            'Done: processed={}, updated={}, skipped={}, failed={}'.format(
+                stats['processed'],
+                stats['updated'],
+                stats['skipped'],
+                stats['failed'],
+            )
+        )
+
+    def _course_keys_for_options(self, course_id):
+        """
+        Return the course keys requested by command options.
+        """
+        if course_id:
+            return [parse_course_key(course_id)]
+
+        return (parse_course_key(course_id) for course_id in course_keys_from_overviews())
+
+    def _process_course(self, course_key, options):
+        """
+        Process one course and return stats.
+        """
+        batch_size = options['batch_size']
+        sleep_seconds = options['sleep']
+        dry_run = options['dry_run']
+        force = options['force']
+        verbosity = options['verbosity']
         users = self._users_for_options(course_key, options['user_ids'])
         stats = {
             'processed': 0,
@@ -131,14 +196,7 @@ class Command(BaseCommand):
             if sleep_seconds:
                 time.sleep(sleep_seconds)
 
-        self.stdout.write(
-            'Done: processed={}, updated={}, skipped={}, failed={}'.format(
-                stats['processed'],
-                stats['updated'],
-                stats['skipped'],
-                stats['failed'],
-            )
-        )
+        return stats
 
     def _users_for_options(self, course_key, user_ids):
         """

@@ -1,7 +1,10 @@
 """
 Tests for completion summary management commands.
 """
+import sys
+import types
 from io import StringIO
+from unittest.mock import Mock
 
 import pytest
 from django.contrib.auth import get_user_model
@@ -54,6 +57,77 @@ def test_backfill_processes_active_enrollments(monkeypatch):
 
     assert CourseCompletionSummary.objects.count() == 2
     assert set(CourseCompletionSummary.objects.values_list('user_id', flat=True)) == {learner_1.id, learner_2.id}
+
+
+def test_course_keys_from_overviews_reads_course_overview_class(monkeypatch):
+    """
+    The all-course source is CourseOverview.get_all_courses().
+    """
+    module_names = [
+        'openedx',
+        'openedx.core',
+        'openedx.core.djangoapps',
+        'openedx.core.djangoapps.content',
+        'openedx.core.djangoapps.content.course_overviews',
+        'openedx.core.djangoapps.content.course_overviews.models',
+    ]
+    for module_name in module_names:
+        module = types.ModuleType(module_name)
+        module.__path__ = []
+        monkeypatch.setitem(sys.modules, module_name, module)
+
+    course_ids = [
+        'course-v1:edX+DemoX+Demo_Course',
+        'course-v1:edX+OtherX+Other_Course',
+    ]
+    overview_queryset = Mock()
+    overview_queryset.order_by.return_value = overview_queryset
+    overview_queryset.values_list.return_value = course_ids
+    course_overview = Mock()
+    course_overview.get_all_courses.return_value = overview_queryset
+    sys.modules['openedx.core.djangoapps.content.course_overviews.models'].CourseOverview = course_overview
+
+    assert backfill_command.course_keys_from_overviews() == course_ids
+    course_overview.get_all_courses.assert_called_once_with()
+    overview_queryset.order_by.assert_called_once_with('id')
+    overview_queryset.values_list.assert_called_once_with('id', flat=True)
+
+
+@pytest.mark.django_db
+def test_backfill_without_course_id_processes_all_course_overviews(monkeypatch):
+    """
+    Without a course id, the command processes every course from CourseOverview.
+    """
+    user_model = get_user_model()
+    learner_1 = user_model.objects.create_user(username='learner-1')
+    learner_2 = user_model.objects.create_user(username='learner-2')
+    course_ids = [
+        'course-v1:edX+DemoX+Demo_Course',
+        'course-v1:edX+OtherX+Other_Course',
+    ]
+    enrolled_course_ids = []
+    _mock_summary(monkeypatch, complete_count=2, incomplete_count=2, locked_count=1)
+
+    def fake_enrolled_users_for_course(course_key):
+        enrolled_course_ids.append(str(course_key))
+        if str(course_key) == course_ids[0]:
+            return user_model.objects.filter(id=learner_1.id).order_by('id')
+        return user_model.objects.filter(id=learner_2.id).order_by('id')
+
+    monkeypatch.setattr(backfill_command, 'course_keys_from_overviews', lambda: course_ids)
+    monkeypatch.setattr(backfill_command, 'enrolled_users_for_course', fake_enrolled_users_for_course)
+
+    call_command(
+        'backfill_course_completion_summaries',
+        stdout=StringIO(),
+        stderr=StringIO(),
+    )
+
+    assert enrolled_course_ids == course_ids
+    assert set(CourseCompletionSummary.objects.values_list('course_id', 'user_id')) == {
+        (course_ids[0], learner_1.id),
+        (course_ids[1], learner_2.id),
+    }
 
 
 @pytest.mark.django_db
