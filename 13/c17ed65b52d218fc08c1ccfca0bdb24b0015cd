@@ -1,0 +1,24 @@
+tests/test_services.py
+  s_45449e5488d9f8::t_75be673dec6491 38-92
+openedx_progress/services.py
+  s_45449e5488d9f8::t_aada7f47985ec4 5,14,40-70,73-80,101-107
+  s_45449e5488d9f8::t_c4d14d750da250 71-72
+README.md
+  s_45449e5488d9f8::t_ae79b2cb1efaca 6-8
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "13c17ed65b52d218fc08c1ccfca0bdb24b0015cd",
+  "prompts": {},
+  "sessions": {
+    "s_45449e5488d9f8": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019f4322-5414-7890-8406-7b99f740d10d",
+        "model": "gpt-5.5"
+      },
+      "human_author": "Andrés González <andres@aulasneo.com>"
+    }
+  }
+}
