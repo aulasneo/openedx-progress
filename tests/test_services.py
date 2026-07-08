@@ -36,6 +36,61 @@ def test_compute_completion_summary_excludes_locked_count(monkeypatch):
 
 
 @pytest.mark.django_db
+def test_compute_completion_summary_derives_locked_count_from_unfiltered_units(monkeypatch):
+    """
+    Locked count includes units pruned from the learner-visible block tree.
+    """
+    user = get_user_model().objects.create_user(username='learner')
+
+    monkeypatch.setattr(
+        services,
+        '_get_course_blocks_completion_summary',
+        lambda course_key, user: {
+            'complete_count': 2,
+            'incomplete_count': 3,
+            'locked_count': 0,
+        },
+    )
+    monkeypatch.setattr(
+        services,
+        '_get_unfiltered_course_unit_count',
+        lambda course_key, user: 7,
+    )
+
+    summary = services.compute_completion_summary('course-v1:edX+DemoX+Demo_Course', user)
+
+    assert summary['locked_count'] == 2
+    assert summary['percent_complete'] == Decimal('0.40000')
+
+
+@pytest.mark.django_db
+def test_compute_completion_summary_keeps_reported_locked_count_when_larger(monkeypatch):
+    """
+    Existing platform locked counts are preserved when the fallback cannot improve them.
+    """
+    user = get_user_model().objects.create_user(username='learner')
+
+    monkeypatch.setattr(
+        services,
+        '_get_course_blocks_completion_summary',
+        lambda course_key, user: {
+            'complete_count': 2,
+            'incomplete_count': 3,
+            'locked_count': 4,
+        },
+    )
+    monkeypatch.setattr(
+        services,
+        '_get_unfiltered_course_unit_count',
+        lambda course_key, user: 5,
+    )
+
+    summary = services.compute_completion_summary('course-v1:edX+DemoX+Demo_Course', user)
+
+    assert summary['locked_count'] == 4
+
+
+@pytest.mark.django_db
 def test_compute_completion_summary_uses_null_percent_when_denominator_is_zero(monkeypatch):
     """
     A course with no complete or incomplete blocks stores no percent value.

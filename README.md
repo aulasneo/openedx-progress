@@ -3,8 +3,9 @@
 Progress tracking for Open edX students.
 
 This Django plugin materializes learner course completion summaries for Open edX
-analytics. It stores one row per learner/course pair with the counts returned by
-`lms.djangoapps.courseware.courses.get_course_blocks_completion_summary` and
+analytics. It stores one row per learner/course pair with the completion counts
+returned by `lms.djangoapps.courseware.courses.get_course_blocks_completion_summary`,
+derives locked units from the unfiltered course structure when available, and
 uses `computed_at` for when the values were last computed.
 
 ## Why this exists
