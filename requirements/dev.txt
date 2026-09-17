@@ -121,7 +121,7 @@ mccabe==0.7.0
     #   -r requirements/quality.txt
     #   pylint
 openedx-atlas==0.7.0
-    # via -r requirements/quality.txt
+    # via -r requirements/dev.in
 packaging==26.2
     # via
     #   -r requirements/ci.txt

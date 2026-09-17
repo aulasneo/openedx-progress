@@ -8,6 +8,16 @@ returned by `lms.djangoapps.courseware.courses.get_course_blocks_completion_summ
 derives locked units from the unfiltered course structure when available, and
 uses `computed_at` for when the values were last computed.
 
+## Compatibility
+
+Targets **Open edX Verawood**, using **Python 3.12+ and Django 5.2**.
+Runtime dependency ranges allow compatible patch updates; development lockfiles
+are not intended to replace the LMS requirements. Install the plugin into the
+platform environment using its constraints.
+
+See [the Verawood compatibility review](docs/verawood.md) for the checked
+upstream versions, integration points, release impacts, and deployment checks.
+
 ## Why this exists
 
 In the LMS progress page, progress, also known as completion, is calculated at

@@ -1,8 +1,6 @@
-# Core requirements for using this application
+# Runtime requirements for Open edX Verawood (Python 3.12 / Django 5.2).
 -c constraints.txt
 
-Django             # Web application framework
-django-model-utils        # Provides TimeStampedModel abstract base class
-edx-django-utils          # Provides Open edX Django plugin registration helpers
-
-openedx-atlas
+Django>=5.2.13,<5.3       # Verawood baseline; permit later security patches
+django-model-utils>=5.0.0,<6.0  # TimeStampedModel
+edx-django-utils>=8.0.1,<9.0    # Open edX Django plugin registration

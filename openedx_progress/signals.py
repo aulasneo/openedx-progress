@@ -25,6 +25,9 @@ def _course_key_from_completion(instance):
     """
     context_key = getattr(instance, 'context_key', None)
     if context_key is not None:
+        # BlockCompletion also supports non-course learning contexts (libraries).
+        if not getattr(context_key, 'is_course', True):
+            return None
         return context_key
 
     block_key = getattr(instance, 'block_key', None)

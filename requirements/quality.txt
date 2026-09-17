@@ -75,8 +75,6 @@ markupsafe==3.0.3
     #   jinja2
 mccabe==0.7.0
     # via pylint
-openedx-atlas==0.7.0
-    # via -r requirements/test.txt
 packaging==26.2
     # via
     #   -r requirements/test.txt
