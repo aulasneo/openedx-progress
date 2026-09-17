@@ -1,0 +1,51 @@
+tox.ini
+  s_2d159bfd822dd6::t_5cfded4d73067b 2,39-40
+openedx_progress/signals.py
+  s_2d159bfd822dd6::t_f90490a548a8d0 28-30
+CHANGELOG.rst
+  s_2d159bfd822dd6::t_5cfded4d73067b 17-24
+  s_2d159bfd822dd6::t_2e1126d3ea985b 25-30
+.github/workflows/ci.yml
+  s_2d159bfd822dd6::t_5cfded4d73067b 18,38
+requirements/base.in
+  s_2d159bfd822dd6::t_5cfded4d73067b 1,4-6
+tests/test_signals.py
+  s_6bdfa6bd156cf8::t_3ef057492b6260 1,3,5,7
+  s_2d159bfd822dd6::t_4b7d902564a99e 2,4,6,8-45
+setup.py
+  s_2d159bfd822dd6::t_5cfded4d73067b 146
+requirements/dev.in
+  s_2d159bfd822dd6::t_5cfded4d73067b 10-11
+docs/conf.py
+  s_2d159bfd822dd6::t_5cfded4d73067b 521
+README.md
+  s_2d159bfd822dd6::t_381aff250ea02e 11-20
+docs/verawood.md
+  s_2d159bfd822dd6::t_897a0a074b76c5 1-84
+requirements/dev.txt
+  s_2d159bfd822dd6::t_cadf1acf5e29ca 124
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "f04ac34e614867267e49f9c5d6546d13be7f95f6",
+  "prompts": {},
+  "sessions": {
+    "s_2d159bfd822dd6": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0af2f-9ab6-7a11-ba07-175a5636bd70",
+        "model": "gpt-6-astra"
+      },
+      "human_author": "Andrés González <andres@aulasneo.com>"
+    },
+    "s_6bdfa6bd156cf8": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019ee020-b6fd-7bf0-b382-b8017b9b40b3",
+        "model": "gpt-5.5"
+      },
+      "human_author": "Andrés González <andres@aulasneo.com>"
+    }
+  }
+}
