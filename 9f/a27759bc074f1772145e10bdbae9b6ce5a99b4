@@ -1,0 +1,16 @@
+.bumpversion.cfg
+  h_67430f944e00e2 5
+openedx_progress/__init__.py
+  h_67430f944e00e2 5
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "9fa27759bc074f1772145e10bdbae9b6ce5a99b4",
+  "prompts": {},
+  "humans": {
+    "h_67430f944e00e2": {
+      "author": "Andrés González <andres@aulasneo.com>"
+    }
+  }
+}
