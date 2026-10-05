@@ -13,13 +13,13 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest]
+        os: [ubuntu-24.04]
         python-version: ["3.12"]
         toxenv: [quality, docs, pii_check, py312-django52, py312-verawood]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: setup python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.python-version }}
 
