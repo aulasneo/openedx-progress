@@ -2,4 +2,4 @@
 Progress tracking for Open edX students.
 """
 
-__version__ = '1.0.0'
+__version__ = '22.0.0'
