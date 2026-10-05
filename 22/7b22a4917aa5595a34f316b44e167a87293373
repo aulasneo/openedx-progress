@@ -1,0 +1,18 @@
+.github/workflows/ci.yml
+  h_67430f944e00e2 16,20,22
+.github/workflows/pypi-publish.yml
+  h_67430f944e00e2 9,13,15
+.gitignore
+  h_67430f944e00e2 34
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "227b22a4917aa5595a34f316b44e167a87293373",
+  "prompts": {},
+  "humans": {
+    "h_67430f944e00e2": {
+      "author": "Andrés González <andres@aulasneo.com>"
+    }
+  }
+}
